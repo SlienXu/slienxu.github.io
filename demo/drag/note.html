@@ -1,0 +1,403 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>notePad - 徐小贝slien - http://slien.me</title>
+<style>
+*{margin:0;padding:0}
+body{
+	background-color: #EEE;
+	overflow: hidden;
+}
+#box{
+	width:340px;
+	height:360px;
+	position: absolute;
+	left:500px;
+	top:100px;
+	background-color: #FFF;
+}
+#title{
+	background: #F7F7F7;
+	height: 0px;
+	line-height: 40px;
+	padding-left:20px;
+	cursor:move;
+}
+#right{
+	position: absolute;
+	top:0px;
+	right: 0px;
+	background-color: #BBB;
+	width:5px;
+	height: 100%;
+	cursor: ew-resize;
+}
+#left{
+	position: absolute;
+	top:0px;
+	left: 0px;
+	background-color: #BBB;
+	width:5px;
+	height: 100%;
+	cursor: ew-resize;
+}
+#bottom{
+	position: absolute;
+	width: 100%;
+	bottom: 0px;
+	height: 5px;
+	background-color: #BBB;
+	cursor: ns-resize;
+}
+#top{
+	position: absolute;
+	width: 100%;
+	top: 0px;
+	height: 5px;
+	background-color: #BBB;
+	cursor: ns-resize;
+}
+#br{
+	width: 5px;
+	height: 5px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	/*background-color: blue;*/
+	z-index:1;
+	cursor:se-resize;
+}
+#bl{
+	width: 5px;
+	height: 5px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	/*background-color: blue;*/
+	z-index:1;
+	cursor:sw-resize;
+}
+#tl{
+	width: 5px;
+	height: 5px;
+	position: absolute;
+	top: 0px;
+	left: 0;
+	/*background-color: blue;*/
+	z-index:1;
+	cursor:nw-resize;
+}
+#tr{
+	width: 5px;
+	height: 5px;
+	position: absolute;
+	top: 0px;
+	right: 0;
+	/*background-color: blue;*/
+	z-index:1;
+	cursor:ne-resize;
+}
+</style>
+<script>
+window.onload=function(){
+	var oDiv = document.getElementById("box");
+	var oRight = document.getElementById("right");
+	var oLeft = document.getElementById("left");
+	var oTop = document.getElementById("top");
+	var oBottom = document.getElementById("bottom");
+	var oBr = document.getElementById("br");
+	var oBl = document.getElementById("bl");
+	var oTr = document.getElementById("tr");
+	var oTl = document.getElementById("tl");
+
+	//右拽
+	oRight.onmousedown = function(e){
+		var e = e || window.event;
+		var oldWidth = oDiv.offsetWidth;
+		var disX = e.clientX;
+		var disY = e.clientY;
+
+		document.onmousemove = function(e){
+			var e = e || window.event;
+			oDiv.style.width = oldWidth + e.clientX - disX + "px";
+		};
+
+		document.onmouseup = function(){
+			document.onmousemove = document.onmouseup = null;
+		};
+
+		return false;
+	};
+
+	//下拽
+	oBottom.onmousedown = function(e){
+		var e = e || window.event;
+		var oldHeight = oDiv.offsetHeight;
+		var disY = e.clientY;
+
+		document.onmousemove = function(e){
+			var e = e || window.event;
+			oDiv.style.height = oldHeight + e.clientY - disY + "px";
+		};
+
+		document.onmouseup = function(){
+			document.onmousemove = document.onmouseup = null;
+		};
+
+		return false;
+	};		
+
+	//左拽
+	oLeft.onmousedown = function(e){
+		var e = e || window.event;
+		var oldWidth = oDiv.offsetWidth;
+		var disX = e.clientX;
+		var oldLeft = oDiv.offsetLeft;
+		var a = disX - getPos(oLeft).left;
+
+		document.onmousemove = function(e){
+			var e = e || window.event;
+
+			if(e.clientX - disX < 0){
+				oDiv.style.width = oldWidth + Math.abs(e.clientX - disX) + "px";
+				oDiv.style.left = e.clientX - a + "px";
+			}else{
+				if(oldWidth - Math.abs(e.clientX - disX) >= 10){
+					oDiv.style.width = oldWidth - Math.abs(e.clientX - disX) + "px";
+					oDiv.style.left = e.clientX - a + "px";
+				}else{
+					oDiv.style.width = 10 + "px";
+					oDiv.style.left = oldLeft + oldWidth - 10 + "px";
+				}
+			};
+		};
+
+		document.onmouseup = function(){
+			document.onmousemove = document.onmouseup = null;
+		};
+
+		return false;
+	};		
+
+	//上拽
+	oTop.onmousedown = function(e){
+		var e = e || window.event;
+		var oldHeight = oDiv.offsetHeight;
+		var oldClientY = e.clientY;
+		var oldTop = oDiv.offsetTop;
+		var disY = e.clientY - getPos(oTop).top;
+
+		document.onmousemove = function(e){
+			var e = e || window.event;
+			if(e.clientY - oldClientY < 0){
+				oDiv.style.height = oldHeight + Math.abs(e.clientY - oldClientY) + "px";
+				oDiv.style.top = e.clientY - disY + "px";
+			}else{
+				if(oldHeight - Math.abs(e.clientY - oldClientY) >= 10){
+					oDiv.style.height = oldHeight - Math.abs(e.clientY - oldClientY) + "px";
+					oDiv.style.top = e.clientY - disY + "px";
+				}else{
+					oDiv.style.height = 10 + "px";
+					oDiv.style.top = oldTop + oldHeight - 10 + "px";
+				};
+				
+			};
+
+			
+		};
+
+		document.onmouseup = function(){
+			document.onmousemove = document.onmouseup = null;
+		};
+
+		return false;
+	};	
+
+	//右下
+	oBr.onmousedown = function(e){
+		var e = e || window.event;
+		var oldHeight = oDiv.offsetHeight;
+		var oldWidth = oDiv.offsetWidth;
+		var oldClientX = e.clientX;
+		var oldClientY = e.clientY;
+
+		document.onmousemove = function(e){
+			var e = e || window.event;
+			
+			oDiv.style.width = oldWidth + e.clientX - oldClientX + "px";
+			oDiv.style.height = oldHeight + e.clientY - oldClientY + "px";
+		};
+
+		document.onmouseup = function(){
+			document.onmousemove = document.onmouseup = null;
+		};
+
+		return false;
+	};	
+
+
+	//右上
+	oTr.onmousedown = function(e){
+		var e = e || window.event;
+		var oldHeight = oDiv.offsetHeight;
+		var oldWidth = oDiv.offsetWidth;
+		var oldClientX = e.clientX;
+		var oldClientY = e.clientY;
+		var oldTop = oDiv.offsetTop;
+		var disY = e.clientY - getPos(oTop).top;
+
+		document.onmousemove = function(e){
+			var e = e || window.event;
+			
+			oDiv.style.width = oldWidth + e.clientX - oldClientX + "px";
+
+			if(e.clientY - oldClientY < 0){
+				oDiv.style.height = oldHeight + Math.abs(e.clientY - oldClientY) + "px";
+				oDiv.style.top = e.clientY - disY + "px";
+			}else{
+				if(oldHeight - Math.abs(e.clientY - oldClientY) >= 10 ){
+					oDiv.style.height = oldHeight - Math.abs(e.clientY - oldClientY) + "px";
+					oDiv.style.top = e.clientY - disY + "px";
+				}else{
+					oDiv.style.height = 10 + "px";
+					oDiv.style.top = oldTop + oldWidth - 10 + "px";
+				};
+			};
+
+			
+		};
+
+		document.onmouseup = function(){
+			document.onmousemove = document.onmouseup = null;
+		};
+
+		return false;
+	};	
+
+
+	//左上
+	oTl.onmousedown = function(e){
+		var e = e || window.event;
+		var oldHeight = oDiv.offsetHeight;
+		var oldWidth = oDiv.offsetWidth;
+		var oldClientX = e.clientX;
+		var oldClientY = e.clientY;
+		var oldLeft = oDiv.offsetLeft;
+		var oldTop = oDiv.offsetTop;
+		var disY = e.clientY - getPos(oTop).top;
+		var disX = e.clientX - getPos(oTop).left;
+
+		document.onmousemove = function(e){
+			var e = e || window.event;
+			
+			if(e.clientX - oldClientX < 0){
+				oDiv.style.width = oldWidth + Math.abs(e.clientX - oldClientX) + "px";
+				oDiv.style.left = e.clientX - disX + "px";
+			}else{
+				if(oldWidth - Math.abs(e.clientX - oldClientX) >= 10){
+					oDiv.style.width = oldWidth - Math.abs(e.clientX - oldClientX) + "px";
+					oDiv.style.left = e.clientX - disX + "px";
+				}else{
+					oDiv.style.width = 10 + "px";
+					oDiv.style.left = oldLeft + oldWidth - 10 + "px";
+				};	
+			};
+
+			
+
+			if(e.clientY - oldClientY < 0){
+				oDiv.style.height = oldHeight + Math.abs(e.clientY - oldClientY) + "px";
+				oDiv.style.top = e.clientY - disY + "px";
+			}else{
+				if(oldHeight - Math.abs(e.clientY - oldClientY) >= 10){
+					oDiv.style.height = oldHeight - Math.abs(e.clientY - oldClientY) + "px";
+					oDiv.style.top = e.clientY - disY + "px";
+				}else{
+					oDiv.style.height = 10 + "px";
+					oDiv.style.top = oldTop + oldHeight - 10 + "px";
+				}
+				
+			};
+
+			
+		};
+
+		document.onmouseup = function(){
+			document.onmousemove = document.onmouseup = null;
+		};
+
+		return false;
+	};	
+
+
+	//左下
+	oBl.onmousedown = function(e){
+		var e = e || window.event;
+		var oldHeight = oDiv.offsetHeight;
+		var oldWidth = oDiv.offsetWidth;
+		var oldClientX = e.clientX;
+		var oldClientY = e.clientY;
+		var oldLeft = oDiv.offsetLeft;
+		var disX = e.clientX - getPos(oTop).left;
+
+		document.onmousemove = function(e){
+			var e = e || window.event;
+			
+			if(e.clientX - oldClientX < 0){
+				oDiv.style.width = oldWidth + Math.abs(e.clientX - oldClientX) + "px";
+				oDiv.style.left = e.clientX - disX + "px";
+			}else{
+				if(oldWidth - Math.abs(e.clientX - oldClientX) >= 10){
+					oDiv.style.width = oldWidth - Math.abs(e.clientX - oldClientX) + "px";
+					oDiv.style.left = e.clientX - disX + "px";
+				}else{
+					oDiv.style.width = 10+ "px";
+					oDiv.style.left = oldLeft + oldWidth - 10 + "px";
+				}
+				
+			};
+
+			oDiv.style.height = oldHeight + e.clientY - oldClientY + "px";
+
+		};
+
+		document.onmouseup = function(){
+			document.onmousemove = document.onmouseup = null;
+		};
+
+		return false;
+	};	
+
+};
+function getPos(obj){
+	var top = 0;
+	var left = 0;
+
+	while(obj){
+		top += obj.offsetTop;
+		left += obj.offsetLeft;
+		obj = obj.offsetParent;
+	};
+
+	return {"left":left,"top":top};
+};
+</script>
+</head>
+<body>
+<div id="box">
+<!-- 	<div id="title">
+		<span>新建文本文档.txt</span>
+	</div> -->
+	<div id="top"></div>
+	
+	<div id="right"></div>
+	<div id="bottom"></div>
+	<div id="left"></div>
+	<div id="br"></div>
+	<div id="bl"></div>
+	<div id="tl"></div>
+	<div id="tr"></div>
+</div>
+</body>
+</html>

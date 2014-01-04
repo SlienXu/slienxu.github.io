@@ -1,0 +1,97 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>easy drag - 徐小贝slien - http://slien.me</title>
+<style>
+*{margin:0;padding:0}
+body {
+   background: #EEE;
+}
+#box{width:200px;height:200px; background:#AAA; position:absolute;cursor:move;z-index: 1;left:10px;top:20px;}
+.border{border:2px dashed black;position: absolute;z-index:0;}
+</style>
+<script>
+window.onload=function()
+{
+   var oBox=document.getElementById('box');
+   var oBtn = document.getElementById("myBtn");
+   var dataAry = [];
+   var i = 0;
+   oBtn.onclick = function(){
+   		var newDataAry = dataAry.reverse();
+   		var timer = setInterval(function(){
+   			oBox.style.left = newDataAry[i].left + "px";
+   			oBox.style.top = newDataAry[i].top + "px";
+   			i++;
+
+   			if(i == newDataAry.length){
+   				clearInterval(timer);
+   			};
+   		},10);
+   };
+
+   oBox.onmousedown = function(e){
+   	var e = e || window.event;
+   	var disX = e.clientX - oBox.offsetLeft;
+   	var disY = e.clientY - oBox.offsetTop;
+   	var oDiv = document.createElement("div");
+
+   	oDiv.className = "border";
+   	oDiv.style.width = oBox.offsetWidth + "px";
+   	oDiv.style.height = oBox.offsetHeight + "px";
+   	oDiv.style.left = oBox.offsetLeft - 2 + "px";
+   	oDiv.style.top = oBox.offsetTop - 2 + "px";
+
+   	document.body.appendChild(oDiv);
+
+	   dataAry.push({"left":oBox.offsetLeft,"top":oBox.offsetTop});
+   	document.onmousemove = function(e){
+   		var e = e || window.event;
+   		var left = e.clientX - disX;
+   		var top = e.clientY - disY;
+
+   		if(left < 0){
+   			left = 0;
+   		};
+
+   		if(left > document.documentElement.clientWidth - oBox.offsetWidth){
+   			left = document.documentElement.clientWidth - oBox.offsetWidth;
+   		};
+
+   		if(top < 0){
+   			top = 0;
+   		};
+
+   		if(top > document.documentElement.clientHeight - oBox.offsetHeight){
+   			top = document.documentElement.clientHeight - oBox.offsetHeight;
+   		};
+
+   		oBox.style.left = left + "px";
+   		oBox.style.top = top + "px";
+
+   		dataAry.push({"left":left,"top":top});
+   	};
+
+   	document.onmouseup = function(){
+   		document.onmousemove = null;
+   		document.onmouseup = null;
+   		document.body.removeChild(oDiv);
+   	};
+
+   	return false;//取消默认选中里面的文字 chrome IE用obj.setCapture()屏蔽浏览器所有事件;
+   };
+
+   document.getElementById("mytxt").onmousedown = function(e){
+	var e = e || event;
+   	e.cancelBubble = true;
+   };
+};
+</script>
+</head>
+<body>
+	<input type="button" value="还原" id="myBtn"/>
+	<div id="box"></div>
+</body>
+</html>
+

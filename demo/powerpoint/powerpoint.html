@@ -1,0 +1,223 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>淘宝幻灯片 - 徐小贝slien - http://slien.me</title>
+<style type="text/css">
+	*{
+		margin:0;
+		padding:0;
+	}
+	body{
+		background-color: #DDD;
+	}
+	#pDiv{
+		margin:100px auto 0px auto;
+		position: relative;
+		width:520px;
+		height: 280px;
+		overflow: hidden;
+	}
+	#imgUl{
+		margin: 0;
+		padding: 0;
+		width: 2600px;
+		height: 280px;
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	#imgUl li{
+		list-style: none;
+		float:left;
+		width:520px;
+	}
+	img{
+		border: 0px;
+		
+	}
+	#ul{	
+		padding: 0px;
+		width: 65px;
+		position: absolute;
+		bottom: 15px;
+		left: 225px;
+		height: 13px;
+		text-align: center;
+		font-size: 0;
+		-webkit-border-radius: 10px;
+		-moz-border-radius: 10px;
+		-ms-border-radius: 10px;
+		-o-border-radius: 10px;
+		border-radius: 10px;
+		background: rgba(255,255,255,.3);
+		filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#4CFFFFFF', EndColorStr='#4CFFFFFF');
+	}
+	#ul li{
+		float: left;
+		list-style: none;
+		display: inline-block;
+		vertical-align: middle;
+		zoom: 1;
+		margin: 2px;
+	}
+	#ul a{
+		display: block;
+		padding-top: 9px;
+		width: 9px;
+		height: 0;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		-ms-border-radius: 50%;
+		-o-border-radius: 50%;
+		border-radius: 50%;
+		background: #b7b7b7;
+		overflow: hidden;
+	}
+
+	#ul a.active{
+		background-color: red;
+	}
+	#imgUl li.show{
+		display: inline-block;
+	}
+	.ha1{
+		position: absolute;
+		top: 120px;
+		left: 10px;
+		width: 19px;
+		height: 26px;
+		display: block;
+		background: url(arrow.png) 0 0 no-repeat;
+		cursor: pointer;
+	}
+	.ha{
+		position: absolute;
+		top: 120px;
+		left: 490px;
+		width: 19px;
+		height: 26px;
+		display: block;
+		background: url(arrow.png) 0 -40px no-repeat;
+		cursor: pointer;
+	}
+
+
+</style>
+<script>
+	window.onload = function(){
+		var pDiv = document.getElementById("pDiv");
+		var ha1 = document.getElementById("ha1");
+		var ha = document.getElementById("ha");
+		var oImgUl = document.getElementById("imgUl");
+		var aImgLis = oImgUl.getElementsByTagName("li");
+		var aBtn = document.getElementById("ul").getElementsByTagName("li");
+		var timer;
+		var iNow = 0;
+		var oldwidth = aImgLis.length * aImgLis[0].offsetWidth;
+		oImgUl.innerHTML = oImgUl.innerHTML + oImgUl.innerHTML;
+		oImgUl.style.width = aImgLis[0].offsetWidth * aImgLis.length + "px";
+		//mouseover切换
+
+		for(var i = 0; i < aBtn.length; i++){
+			(function(index){
+				aBtn[i].onclick = function(){
+					var dis = index-iNow%aBtn.length;
+					var temp = dis < 0 ? 1:-1;
+					iNow = (index-iNow%aBtn.length)+iNow;
+					if((iNow%aBtn.length)==4 || iNow%aBtn.length == 0){
+						left =  left - (dis+1*temp)*aImgLis[0].offsetWidth;
+					};
+					changeStyle();
+				}
+			})(i);
+		};
+		
+		function changeStyle(){
+			for(var i = 0; i < aBtn.length; i++){
+				aBtn[i].children[0].className = "";
+			}
+			
+			if(iNow < 0){
+				aBtn[(iNow%aBtn.length+aBtn.length)%5].children[0].className = "active";
+			}else{
+				aBtn[iNow%aBtn.length].children[0].className = "active";
+			};
+
+			startMove(oImgUl,-iNow*aImgLis[0].offsetWidth);
+		};
+		
+		function openInterval(){
+			iNow ++;
+			changeStyle();
+		};
+		
+		timer = window.setInterval(openInterval,2000);
+		
+		pDiv.onmouseover = function(){
+			clearInterval(timer);
+		};
+		
+		pDiv.onmouseout = function(){
+			timer = window.setInterval(openInterval,2000);
+		};	
+		
+		//往左翻
+		ha1.onclick = function(){
+			iNow--;
+			changeStyle()
+		};
+		
+		//往右翻
+		ha.onclick = function(){
+			iNow++;
+			changeStyle();
+		};
+
+		var left = 0;
+		function startMove(obj,target){
+			clearInterval(obj.timer);
+
+			obj.timer = setInterval(function(){
+				var speed = (target - left)/8;
+				speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+
+				if(left == target){
+					clearInterval(obj.timer);
+				}else{
+					left += speed;
+
+					if(target < 0){
+						obj.style.left = left%oldwidth + "px";
+					}else{
+						obj.style.left = (left%oldwidth-oldwidth)%oldwidth + "px";
+					};
+				};
+			},30);
+		};
+	};
+
+</script>
+</head>
+
+<body>
+	<div id="pDiv">
+		<ul id="imgUl">	
+			<li class="show"><img src="1.jpg"></img></li>
+			<li><img src="2.jpg"></img></li>
+			<li><img src="3.jpg"></img></li>
+			<li><img src="4.jpg"></img></li>
+			<li><img src="5.jpg"></img></li>
+		</ul>
+		<a class="ha1" id="ha1"></a>
+		<a class="ha" id="ha"></a>
+		<ul id="ul">
+			<li><a class="active"></a></li>
+			<li><a></a></li>
+			<li><a></a></li>
+			<li><a></a></li>
+			<li><a></a></li>
+		</ul>
+	</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title> 自定义下拉框组件 - 徐小贝slien - http://slien.me</title>
+  <style type="text/css">
+    *{margin: 0;padding: 0}
+    body{
+      background: #EEE;
+    }
+    div{
+      position: relative;
+      left:20px;
+      top: 30px;
+    }
+    #myinput{
+      display: inline-block;
+      width:100px;
+      color:#444;
+      border:2px solid #BBB;
+      height:18px;
+    }
+  </style>
+  <script type="text/javascript" src="select.js"></script>
+  <script type="text/javascript">
+    window.onload = function(){
+      var dataAry = ["-请选择城市-","北京","上海","广州","深圳","西安"];
+      createMySelfSelect("myinput",dataAry);
+    };
+  </script>
+</head>
+<body>
+  <div>
+      <span>城市:</span>
+      <span id="myinput"></span>
+  </div>
+</body>
+</html>

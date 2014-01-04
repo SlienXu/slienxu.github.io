@@ -1,0 +1,89 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>瀑布流 - 徐小贝slien - http://slien.me</title>
+<style>
+*{margin:0;padding:0}
+body{background: #EEE;}
+ul{ float:left;width:80px;border:1px solid #AAA;margin-right:40px;}
+div{ overflow:hidden;width:576px; float:left;margin-left:350px;}
+li{ list-style:none;margin-bottom:1px; color:#333; font-size:30px}
+</style>
+<script>
+window.onload=function()
+{	
+	//IE7以下有问题：低版本浏览器渲染太慢，for循环太快。
+	//解决？?? 方法：通过定时器，创建一个等待1ms
+	var aUl = document.getElementsByTagName("ul");
+	var n = 0;
+
+	createTwenty();
+
+	function createTwenty(){
+		newcreateLi();
+		var count = 1;
+		var timer = setInterval(function(){
+			if(count > 20){
+				clearInterval(timer);
+				return;
+			}
+			newcreateLi();
+			count ++;
+		},1);
+	};
+
+	function newcreateLi(){
+		var newLi = createLi();
+		var tempUl = null;
+
+		n++;
+		newLi.innerHTML= n;
+
+		if(aUl[0].offsetHeight < aUl[1].offsetHeight){
+			tempUl = aUl[0];
+		}else{
+			tempUl = aUl[1];
+		};
+
+		if(aUl[2].offsetHeight < tempUl.offsetHeight){
+			tempUl = aUl[2];
+		};
+
+		tempUl.appendChild(newLi);
+	};
+
+	window.onscroll = window.resize = function(){
+		var scrollHeigt = document.body.scrollTop || document.documentElement.scrollTop;
+
+		if(document.body.offsetHeight - document.documentElement.clientHeight <= scrollHeigt){
+			createTwenty();
+		}
+	};
+
+	createTwenty();
+};
+
+function createLi(){
+	var nowLi = document.createElement("li");
+	nowLi.style.backgroundColor = "rgb("+getRnd(0,255)+","+getRnd(0,255)+","+getRnd(0,255)+")";
+	nowLi.style.height = getRnd(100,150) + "px";
+
+	return nowLi;
+};
+
+function getRnd(min,max){
+	return Math.floor(Math.random()*(max - min + 1) + min);
+};
+</script>
+</head>
+
+<body>
+<div>
+ <ul></ul>
+ <ul></ul>
+ <ul style="marign-right:0;"></ul>
+</div>
+<div></div>
+</body>
+</html>

@@ -1,0 +1,278 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>碰撞检测 - 徐小贝slien - http://slien.me</title>
+<style>
+*{margin:0;padding:0;font-size: 35px;font-weight: bold;}
+body{
+	background:#EEE;
+	overflow:hidden;
+	padding-left:30px;
+}
+div{
+	border:1px solid #BBB;
+	background:#BBB;
+	text-align:center;
+	vertical-align:middle;
+	color:#333;
+}
+.div1{width:200px;height:200px;  position:absolute;top:10px;left:10px; overflow:hidden; }
+#box2{width:200px;height:200px;position:absolute;top:280px;left:290px;}
+.div{
+	width:200px;
+	height: 200px;
+	position: absolute;
+}
+#box3{
+	left:290px;
+	top:10px;
+}
+#box4{
+	left:580px;
+	top:10px;
+}
+#box5{
+	left:580px;
+	top:280px;
+}
+#box6{
+	left:10px;
+	top:280px;
+}
+#box7{
+	left:850px;
+	top:10px;
+}
+#box8{
+	left:850px;
+	top:280px;
+}
+</style>
+<script>
+/* 碰撞检测  可以双向检测
+    如果碰上了，互换位置
+    如果没碰上 up的时候。回原位*/
+
+window.onload = function(){
+
+	//crashedFn("box","box2");
+	//var aDivId = ["box","box2","box3","box4","box5","box6","box7","box8"];
+	var aDiv = document.getElementsByTagName("div");
+
+	for(var i = 0 ; i < aDiv.length;i++){
+		var aDivId = ["box","box2","box3","box4","box5","box6","box7","box8"];
+		crashedFn(aDivId[i],aDivId);
+	};
+};
+
+function crashedFn(moveObjId,crashedObjIds){
+	var oBox=document.getElementById(moveObjId);
+	var boxLeft = oBox.offsetLeft;
+	var boxTop = oBox.offsetTop;
+	var defaultColor = [];
+
+	crashedObjIds.splice(getIndex(crashedObjIds,moveObjId),1);
+
+	for(var i = 0 ; i < crashedObjIds.length ; i++){
+		var crashedObj = document.getElementById(crashedObjIds[i]);
+		defaultColor.push({"obj":crashedObj,"color":crashedObj.currentStyle ? crashedObj.currentStyle.backgroundColor : getComputedStyle(crashedObj,false).backgroundColor});
+	};
+
+
+	oBox.onmousedown = function(e){
+		var e = e || window.event;
+		var disX = e.clientX - oBox.offsetLeft;
+		var disY = e.clientY - oBox.offsetTop;
+		var dataAry = [];
+
+		dataAry.push({"left":oBox.offsetLeft,"top":oBox.offsetTop});
+
+		document.onmousemove = function(e){
+			var e = e || window.event;
+			var left = e.clientX - disX;
+			var top = e.clientY - disY;
+
+			if(left < 0 ){
+				left = 0;
+			};
+
+			if(left > document.documentElement.clientWidth - oBox.offsetWidth ){
+				left = document.documentElement.clientWidth - oBox.offsetWidth;
+			};
+
+			if(top < 0 ){
+				top = 0;
+			};
+
+			if(top > document.documentElement.clientHeight - oBox.offsetHeight ){
+				top = document.documentElement.clientHeight - oBox.offsetHeight ;
+			};
+
+			oBox.style.left = left + "px";
+			oBox.style.top = top + "px";
+
+			dataAry.push({"left":left,"top":top});
+
+			for(var i = 0 ; i < crashedObjIds.length ; i++){
+				var crashedObj = document.getElementById(crashedObjIds[i]);
+				if(isCrashed(oBox,crashedObj)){
+					//碰撞上
+					oBox.style.zIndex = 1;
+					crashedObj.style.zIndex = 0;
+					crashedObj.style.backgroundColor = "#888";
+				}else{
+					crashedObj.style.backgroundColor = defaultColor[i].color;
+				};
+			};
+			
+		};
+		
+		document.onmouseup = function(){
+			var flag = true;
+			var crashedAry = [];
+			for(var i = 0 ; i < crashedObjIds.length ; i++){
+				var crashedObj = document.getElementById(crashedObjIds[i]);
+				if(isCrashed(oBox,crashedObj)){
+					flag = false;
+					crashedAry.push(crashedObj);
+				};
+			};
+
+			if(flag){
+				//没有跟任何一个碰上
+				returnMove(oBox,dataAry.reverse());	
+
+			}else{
+				//至少跟一个碰上
+				var disAry = [];
+				for(var i = 0 ; i < crashedAry.length ; i++){
+					var item = crashedAry[i];
+					//当前div的中心点坐标
+					var oBoxX = getPos(oBox).left + oBox.offsetWidth/2;
+					var oBoxY = getPos(oBox).top + oBox.offsetHeight/2;
+
+					var itemX = getPos(item).left + item.offsetWidth/2;
+					var itemY = getPos(item).top + item.offsetHeight/2;
+
+					var a = oBoxX - itemX;
+					var b = oBoxY - itemY;
+
+					var juli = Math.sqrt(a*a + b*b);
+
+					disAry.push({"juli":juli,"obj":item});
+					//console.log(oBoxY)
+				}
+
+				disAry.sort(function(item1,item2){
+					return item1.juli - item2.juli
+				});
+
+				var changeObj = disAry[disAry.length-1].obj;
+
+				oBox.style.left = changeObj.offsetLeft + "px";
+				oBox.style.top = changeObj.offsetTop + "px";
+
+				changeObj.style.left = dataAry[0].left + "px";
+				changeObj.style.top = dataAry[0].top + "px";
+				for(var j=0;j<defaultColor.length;j++){
+					//console.log("colorObj",defaultColor[j].color)
+					for(var i = 0 ; i < disAry.length ; i++){
+						var item = disAry[i];
+						console.log(item, defaultColor[j].obj.id)
+						//conconsole.log("colorObj",defaultColor[j].obj)sole.log(item.obj, defaultColor[i].obj)
+						if(item.obj == defaultColor[j].obj){
+							item.obj.style.backgroundColor = defaultColor[j].color;
+						}
+					}					
+				};
+			}
+			
+			//TODO 取消默认	兼容IE
+			if(oBox.setcapture){
+				oBox.releaseCapture();
+			};
+
+			document.onmousemove = document.onmouseup = null;
+		};
+
+		//TODO 取消默认	兼容IE
+		if(oBox.setcapture){
+			oBox.setcapture();
+		}
+		return false;
+	};
+};
+
+//检测是否碰到
+function isCrashed(moveObj,crashedObj){
+	var top1 = moveObj.offsetTop;
+	var bottom1 = moveObj.offsetTop + moveObj.offsetHeight;
+	var left1 = moveObj.offsetLeft;
+	var right1 = moveObj.offsetLeft + moveObj.offsetWidth;
+
+	var top2 = crashedObj.offsetTop;
+	var bottom2 = crashedObj.offsetTop + crashedObj.offsetHeight;
+	var left2 = crashedObj.offsetLeft;
+	var right2 = crashedObj.offsetLeft + crashedObj.offsetWidth;
+
+	if(top1 > bottom2 || left1 > right2 || bottom1 < top2 || right1 < left2){
+		//not crashed
+		return false;
+	}
+
+	//crashed
+	return true;
+};
+
+//原路返回
+function returnMove(obj,dataaAry){
+	var i = 0 ;
+	var timer =	 setInterval(function(){
+		obj.style.left = dataaAry[i].left + "px";
+		obj.style.top = dataaAry[i].top + "px";
+
+		i++;
+		if(i == dataaAry.length){
+			clearInterval(timer);
+		};
+	},10);
+};
+
+function getPos(obj){
+	var top = 0;
+	var left = 0;
+
+	while(obj){
+		top += obj.offsetTop;
+		left += obj.offsetLeft;
+		obj = obj.offsetParent;
+	};
+
+	return {"left":left,"top":top};
+};
+
+function getIndex(ary,ele){
+	for(var i = 0 ; i < ary.length; i++){
+		if(ele == ary[i]){
+			return i;
+		}
+	}
+
+	return -1;
+};
+</script>
+</head>
+<body>
+	<div class="div1" id="box">box</div>
+	<div id="box2" class="div">box4</div>
+	<div id="box3" class="div">box2</div>
+	<div id="box4" class="div">box3</div>
+	<div id="box5" class="div">box5</div>
+	<div id="box6" class="div">box6</div>
+	<div id="box7" class="div">box7</div>
+	<div id="box8" class="div">box8</div>
+	<!-- <div id="box6" class="div"></div>
+	<div id="box7" class="div"></div> -->
+</body>
+</html>

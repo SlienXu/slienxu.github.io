@@ -1,0 +1,70 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>图片懒加载 - 徐小贝slien - http://slien.me</title>
+<style>
+body{background: #EEE;}
+img{ display:block;width:600px;height:700px;}
+</style>
+<script>
+window.onload=function()
+{
+	var aImg=document.getElementsByTagName('img');
+	
+	function fn()
+	{
+		var winHeight=document.documentElement.clientHeight;
+		var scrollTop=document.body.scrollTop||document.documentElement.scrollTop;
+		
+		for(var i=0;i<aImg.length;i++)
+		{
+			if( getPos(aImg[i]).top< winHeight+scrollTop )
+			{
+                (function(index){
+					var oImg=new Image();
+					oImg.onload=function(){
+						aImg[index].src=this.src;	
+					};
+					oImg.src=aImg[i].getAttribute('_src');
+					
+				})(i);
+			}
+		};	
+	};
+	fn();
+	window.onscroll=window.onresize=function()
+	{
+	   	fn();
+	};
+  
+};
+
+function getPos(obj)
+{
+   var l=0;
+   var t=0;
+   while(obj)
+   {
+	   l+=obj.offsetLeft;
+	   t+=obj.offsetTop;
+	   obj=obj.offsetParent;   
+   };
+   
+   return {left:l,top:t}
+}
+</script>
+</head>
+
+<body>
+
+<img src="logo.png" _src="http://a.hiphotos.baidu.com/image/w%3D2048/sign=58663f84023b5bb5bed727fe02ebd439/7dd98d1001e93901516db3117aec54e736d196b5.jpg">
+
+<img src="logo.png" _src="http://g.hiphotos.baidu.com/image/w%3D2048/sign=94da5b23a50f4bfb8cd0995437777af0/86d6277f9e2f07083ee01ebce824b899a801f2a0.jpg">
+
+<img src="logo.png" _src="http://a.hiphotos.baidu.com/image/w%3D2048/sign=0ef89c67cf1b9d168ac79d61c7e6b58f/a71ea8d3fd1f4134ef340bc6241f95cad1c85e02.jpg">
+
+<img src="logo.png" _src="http://e.hiphotos.baidu.com/image/w%3D2048/sign=76190688728da9774e2f812b8469f919/8b13632762d0f703ad06506709fa513d2797c5d1.jpg">
+
+</body>
+</html>

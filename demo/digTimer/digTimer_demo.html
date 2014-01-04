@@ -1,0 +1,80 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>超酷数码钟表 - 徐小贝slien - http://slien.me</title>
+<link href="style/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/myTool.js"></script>
+<script>
+$(function(){
+    var aNum = $(".num");
+    var oWeek = $(".num2")[0];
+    var g_aWeekName=
+    [
+        "seven",
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six"
+    ];
+
+    refreshTime();
+    setInterval(refreshTime,1000);
+    function refreshTime(){
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = addZero(now.getMonth() + 1);
+        var day = addZero(now.getDate());
+        var hour = addZero(now.getHours());
+        var minute = addZero(now.getMinutes());
+        var second = addZero(now.getSeconds());
+        var week = now.getDay();
+        var timestr = year + month + day + hour + minute + second;
+
+        for(var i = 0 ; i < aNum.length ; i++){
+            aNum[i].src = "images/"+timestr.charAt(i)+".png";
+        };
+
+        oWeek.src = "images/"+g_aWeekName[week]+".png";
+
+    };
+});
+</script>
+
+</head>
+
+<body>
+
+<div id="clock" class="date">
+    <h2><img src="images/title.png" /></h2>
+    <div class="year">
+        <img class="num" src="images/0.png" alt="0" />
+        <img class="num" src="images/0.png" alt="0" />
+        <img class="num" src="images/0.png" alt="0" />
+        <img class="num" src="images/0.png" alt="0" />
+        <img src="images/year.png" alt="year" />
+        <img class="num" src="images/0.png" alt="0" />
+        <img class="num" src="images/0.png" alt="0" />
+        <img src="images/month.png" alt="month" />
+        <img class="num" src="images/0.png" alt="0" />
+        <img class="num" src="images/0.png" alt="0" />
+        <img src="images/seven.png" alt="seven" />
+    </div>
+    <div class="time">
+        <img class="num" src="images/0.png" alt="0" />
+        <img class="num" src="images/0.png" alt="0" />
+        <img src="images/sign.png" alt="sign" />
+        <img class="num" src="images/0.png" alt="0" />
+        <img class="num" src="images/0.png" alt="0" />
+        <img src="images/sign.png" alt="sign" />
+        <img class="num" src="images/0.png" alt="0" />
+        <img class="num" src="images/0.png" alt="0" />
+        <img class="pos2" src="images/week.png" alt="week" />
+        <img class="num2" src="images/one.png" alt="one" />
+    </div>
+</div>
+
+</body>
+</html>

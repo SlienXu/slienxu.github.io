@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>多放大镜 - 徐小贝slien - http://slien.me</title>
+<style type="text/css">
+*{ margin:0; padding:0;}
+body{background: #EEE;}
+#div1{ width:312px; margin:50px auto; position:relative;}
+.small{ width:310px; height:310px; border:1px solid #cdcdcd; overflow:hidden; left:0; top:0; position:absolute;}
+.mark{ position:absolute; width:100%; height:100%; background:#ff0000; filter:alpha(opacity:0); opacity:0; z-index:2;cursor:move;}
+.float1 { width:100px; height:100px; background:#fede4f; border:1px solid #aaa; filter:alpha(opacity:50);opacity:0.5; position:absolute;  display:none;}
+.big{ width:310px; height:310px; border:1px solid #cdcdcd; overflow:hidden; position:absolute; left:320px; top:0; display:none;}
+.big img{ position:absolute; left:0; top:0;}
+#list{ width:288px; height:46px; overflow:hidden; position:absolute; left:10px; top:320px;}
+#list ul{ position:absolute; left:0;}
+#list li{ list-style:none; float:left; padding:4px; overflow:hidden; width:40px; height:40px;}
+#list li img{ border:1px solid #cdcdcd;}
+#list .active img{  border:1px solid #ff0000;}
+#left{ width:10px; height:45px; display:block; background:url(images/left.gif) no-repeat; position:absolute; top:322px; left:0; cursor:pointer;}
+#right{ width:10px; height:45px; display:block; background:url(images/right.gif) no-repeat; position:absolute; top:322px; left:300px; cursor:pointer;}
+</style>
+<script type="text/javascript" src="slienTool.js"></script>
+<script>
+$(function(){
+	var oSmallDiv = $(".small")[0];
+	var oSmallImg = oSmallDiv.children[2];
+	var oBigImg = $(".big")[0].children[0];
+	var aImgs = $("#list").getElementsByTagName("li");
+	var oLeftBtn = $("#left");
+	var oRightBtn = $("#right");
+	var oUl = $("#list").children[0];
+	var oMark = $(".mark")[0];
+	var ofloat = $(".float1")[0];
+
+
+	for(var i = 0 ; i < aImgs.length ; i++){
+		(function(index){
+			aImgs[i].onmouseover = function(){
+				for(var i = 0 ; i < aImgs.length ; i++){
+					aImgs[i].className = "";
+				};
+				this.className = "active";
+				oSmallImg.src = "images/m"+(index+1)+".jpg";
+				oBigImg.src = "images/b"+(index+1)+".jpg"
+			};
+		})(i);
+		
+	};	
+
+	oSmallDiv.onmousemove = function(e){
+		var e = e || window.event;	
+		ofloat.style.display = "block";
+		$(".big")[0].style.display = "block";
+		var left = e.clientX - getAbsolute(oSmallDiv).left  - ofloat.offsetWidth/2;
+		var top = e.clientY - getAbsolute(oSmallDiv).top - ofloat.offsetHeight/2;
+
+		if(left <= 0){
+			left = 0;
+		};
+
+		if(left >= oSmallDiv.offsetWidth - ofloat.offsetWidth){
+			left = oSmallDiv.offsetWidth - ofloat.offsetWidth;
+		};
+
+		if(top <= 0){
+			top = 0;
+		};
+
+		if(top >= oSmallDiv.offsetHeight - ofloat.offsetHeight){
+			top = oSmallDiv.offsetHeight - ofloat.offsetHeight;
+		};
+
+		ofloat.style.left = left + "px";
+		ofloat.style.top = top + "px";
+
+		oBigImg.style.left = ($(".big")[0].offsetWidth - oBigImg.offsetWidth)*(left/(oSmallDiv.offsetWidth - ofloat.offsetWidth)) + "px";
+
+		oBigImg.style.top = ($(".big")[0].offsetHeight - oBigImg.offsetHeight)*(top/(oSmallDiv.offsetHeight - ofloat.offsetHeight)) + "px";
+
+	};
+
+	oSmallDiv.onmouseout = function(){
+		ofloat.style.display = "none";
+		$(".big")[0].style.display = "none";
+	};
+
+	oLeftBtn.onclick = function(){
+		if(oUl.offsetLeft == - (aImgs.length - 6)*aImgs[0].offsetWidth )return;
+		oUl.style.left = oUl.offsetLeft - aImgs[0].offsetWidth + "px";
+	};
+
+	oRightBtn.onclick = function(){
+		if(oUl.offsetLeft == 0)return;
+		oUl.style.left = oUl.offsetLeft + aImgs[0].offsetWidth + "px";
+	};
+});
+
+function getAbsoute(obj){
+	var top = 0;
+	var left = 0;
+
+	while(obj){
+		top += obj.offsetTop;
+		left += obj.offsetLeft;
+		obj = obj.offsetParent;
+	};
+
+	return {"top":top,"left":left};
+};
+</script>
+</head>
+
+<body>
+<div id="div1">
+	<div class="small">
+    	<div class="float1"></div>
+    	<div class="mark"></div>
+        <img src="images/m1.jpg" width="310" height="310" />
+    </div>
+    <div class="big">
+    	<img src="images/b1.jpg" />
+    </div>
+    <span id="left"></span>
+    <span id="right"></span>
+    <div id="list">
+    	<ul>
+        	<li class="active"><img src="images/s1.jpg" /></li>
+        	<li><img src="images/s2.jpg" /></li>
+        	<li><img src="images/s3.jpg" /></li>
+            <li><img src="images/s4.jpg" /></li>
+        	<li><img src="images/s5.jpg" /></li>
+            <li><img src="images/s6.jpg" /></li>
+            <li><img src="images/s7.jpg" /></li>
+            <li><img src="images/s8.jpg" /></li>
+        	<li><img src="images/s9.jpg" /></li>
+            <li><img src="images/s10.jpg" /></li>
+        </ul>
+    </div>
+</div> 
+</body>
+</html>

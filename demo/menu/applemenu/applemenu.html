@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>仿苹果菜单 - 徐小贝 - http://slien.me</title>
+<style>
+body{background:#EEE;}
+#div1 {position:absolute; bottom:0; left:0; width:100%; text-align:center;}
+</style>
+<script>
+function getPos(obj)
+{
+	var result={left: 0, top: 0};
+	
+	while(obj)
+	{
+		result.left+=obj.offsetLeft;
+		result.top+=obj.offsetTop;
+		
+		obj=obj.offsetParent;
+	}
+	
+	return result;
+}
+
+window.onload=function ()
+{
+	var aImgs = document.getElementsByTagName("img");
+	var aInput = document.getElementsByTagName("input");
+
+	document.onmousemove = function(e){
+		var e = e || window.event;
+
+		for(var i = 0 ; i < aImgs.length ; i++){
+			var left = getPos(aImgs[i]).left + aImgs[i].offsetWidth/2;
+			var top = getPos(aImgs[i]).top + aImgs[i].offsetHeight/2;
+
+			var a = e.clientX - left;
+			var b = e.clientY - top;
+
+			var dis = Math.sqrt(a*a+b*b);
+			var scale = 1-dis/200;
+
+			if(scale < 0.5)scale = 0.5;
+			aImgs[i].width = 128 * scale;
+				
+		};
+	};
+};
+</script>
+</head>
+
+<body>
+
+<div id="div1">
+    <img src="img/1.png" width="64" />
+    <img src="img/2.png" width="64" />
+    <img src="img/3.png" width="64" />
+    <img src="img/4.png" width="64" />
+    <img src="img/5.png" width="64" />
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

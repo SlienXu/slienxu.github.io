@@ -1,0 +1,6 @@
+.slienSelfUl{border: 1px solid #BBB;border-top:none;width:101px;display: none;position: absolute;left: 20px;top:50px;}
+.slienSelfUl li{
+  list-style: none;
+  color:#666;
+  cursor: pointer;
+}

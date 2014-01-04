@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>图片展示效果- 徐小贝slien - http://slien.me</title>
+<style>
+* {margin:0; padding:0; list-style:none;border:none;}
+body {background: #EEE;}
+#div1 {width:700px;height:400px; background:; margin:10px auto; position:relative; overflow: hidden;}
+#div1 ul {position:absolute; height:172px; top:50%; margin-top:-126px;}
+#div1 ul li { float:left; margin:10px;}
+img{
+	width:240px;
+}
+</style>
+<script>
+function getPos(obj)
+{
+	var result={left: 0, top: 0};
+	
+	while(obj)
+	{
+		result.left+=obj.offsetLeft;
+		result.top+=obj.offsetTop;
+		
+		obj=obj.offsetParent;
+	}
+	
+	return result;
+};
+
+window.onload=function ()
+{
+	var oDiv=document.getElementById('div1');
+	var oUl=oDiv.children[0];
+	var aLi=oUl.children;
+	var aImg = document.getElementsByTagName("img");
+	oUl.style.width=aLi.length*(aLi[0].offsetWidth+20)+'px';
+	
+	var widthJson = {};
+	var heightJson = {};
+	var aPos = [];
+
+	for(var i = 0 ; i < aLi.length ;i++){
+		aPos[i]={left: aLi[i].offsetLeft, top: aLi[i].offsetTop};
+		aLi[i].style.left = aLi[i].offsetLeft +"px";
+		aLi[i].style.top = aLi[i].offsetTop+"px";
+	};
+
+	for(var i = 0 ; i < aLi.length ;i++){
+		aLi[i].style.position = "absolute";
+		aLi[i].style.margin="0px";
+	};	
+
+	for(var i = 0 ; i < aLi.length ;i++){
+		widthJson[i] = aLi[i].offsetWidth;
+		heightJson[i] = aLi[i].offsetHeight;
+	};
+
+	oUl.onmousedown = function(e){
+		var e = e || window.event;
+		var disX =e.clientX - oUl.offsetLeft;
+		document.onmousemove = function(e){
+			var e = e || window.event;
+			var left = e.clientX - disX;
+
+			var max=aLi.length-1;
+
+			if(left > oDiv.offsetWidth/2- (aPos[0].left+aLi[0].offsetWidth/2)){
+				left = oDiv.offsetWidth/2- (aPos[0].left+aLi[0].offsetWidth/2);
+			};
+
+			if(left < oDiv.offsetWidth/2- (aPos[max].left+aLi[0].offsetWidth/2)){
+				left = oDiv.offsetWidth/2- (aPos[max].left+aLi[0].offsetWidth/2);
+			};
+
+			oUl.style.left = left + "px";
+			setSize();
+		};
+ 
+		document.onmouseup = function(){
+			document.onmousemove = document.onmouseup = null;
+		};
+
+		return false;
+	};
+
+	setCur(6);
+
+	function setCur(n){
+		oUl.style.left = oDiv.offsetWidth/2 - (aPos[n-1].left+50) + "px";	
+		setSize();
+	};
+
+	//改变尺寸
+	function setSize(){
+		for(var i = 0 ; i < aLi.length ;i++){
+			//每个li中心，距离div左边的距离
+			var oLix = getPos(aLi[i]).left  - getPos(oDiv).left + aLi[i].offsetWidth/2;
+			var dis = Math.abs(oLix - oDiv.offsetWidth/2);
+			var scale = parseFloat(1 - dis/500).toFixed(2);
+
+			scale = scale < 0.5 ? 0.5 : scale;
+			aImg[i].style.width = 320*scale + "px";
+			aImg[i].style.height = 450*scale + "px";
+
+			aLi[i].style.width = 320*scale + "px";
+			aLi[i].style.height = 450*scale + "px";
+			aLi[i].style.marginLeft = -(parseInt(aImg[i].style.width)-widthJson[i])/2 + "px";
+			aLi[i].style.marginTop = -(parseInt(aImg[i].style.height)-heightJson[i])/2 - 15 + "px";
+
+			aLi[i].style.zIndex = scale*100;
+			aLi[i].style.opacity = scale;
+			//aLi[i].innerHTML = scale*100;
+		};
+	};
+};
+</script>
+</head>
+
+<body>
+<div id="div1">
+	<ul>
+    	<li><img src="1.jpg"/></li>
+    	<li><img src="2.jpg"/></li>
+    	<li><img src="3.jpg"/></li>
+    	<li><img src="4.jpg"/></li>
+    	<li><img src="5.jpg"/></li>
+    	<li><img src="6.jpg"/></li>
+    	<li><img src="9.jpg"/></li>
+    	<li><img src="3.jpg"/></li>
+    	<li><img src="4.jpg"/></li>
+    	<li><img src="5.jpg"/></li>
+    	<li><img src="7.jpg"/></li>
+    	<li><img src="8.jpg"/></li>
+    	<li><img src="9.jpg"/></li>
+    </ul>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

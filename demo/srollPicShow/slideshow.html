@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>图片竖向滚动 - 徐小贝slien - http://slien.me</title>
+<style type="text/css">
+* { padding: 0; margin: 0; }
+li { list-style: none; }
+body { background: #EEE; }
+#slideShow { width: 168px; margin: 50px auto 0; }
+#slideShow h2 { height: 24px; line-height: 24px; padding: 0 10px; background: url(images/bg.gif) no-repeat; font-size: 12px; font-weight: normal; }
+#slideShow h2 a { text-decoration: none; color: #fff; }
+#slideShow h2 a:hover { text-decoration: underline; }
+#slideShow .title { float: left; }
+#slideShow .more { float: right; }
+#slideShow .wrap { border: 1px solid #d1d1d1; border-bottom: none; }
+#slideShow p { position: relative; z-index: 2; }
+#slideShow .up a { display: block; height: 22px; background: #efefef url(images/bg.gif) no-repeat 75px -40px; }
+#slideShow .up a:hover { background: #e4ebf2 url(images/bg.gif) no-repeat 75px -40px; }
+#slideShow .down a { display: block; height: 22px; background: #efefef url(images/bg.gif) no-repeat -78px -40px; }
+#slideShow .down a:hover { background: #e4ebf2 url(images/bg.gif) no-repeat -78px -40px; }
+#slideShow .content { height: 380px; overflow: hidden; position: relative; z-index: 1; }
+#slideShow ul { position: absolute; top: 0; left: 0; }
+#slideShow li { width: 166px; float: left; }
+#slideShow li img { display: block; }
+#slideShow .footer { height: 5px; overflow: hidden; background: url(images/bg.gif) no-repeat 0 -25px; }
+</style>
+<script type="text/javascript">
+    window.onload = function(){
+        var aP = document.getElementsByTagName("p");
+        var oUp = aP[0];
+        var oDown = aP[1];
+        var oUl = document.getElementsByTagName("ul")[0];
+        var aLi = oUl.children;
+        var l = 0;
+        var timer;
+        var n = -3;
+        oUl.innerHTML += oUl.innerHTML;
+        oUp.onmousedown = function(){
+            n = -3;
+            openInterval();
+        };
+
+        oUp.onmouseup = function(){
+            clearInterval(timer);
+        };
+
+        oDown.onmousedown = function(){
+            n = 3;
+            openInterval();
+
+        };
+
+        oDown.onmouseup = function(){
+            clearInterval(timer);
+        };
+
+        function openInterval(){
+            timer = setInterval(function(){
+                l += n;
+                if(n < 0 && l <= -oUl.offsetHeight/2){
+                    l = 0;
+                }
+                if(n > 0 && l >= 0){
+                    l = - oUl.offsetHeight/2;;
+                }
+                oUl.style.top = l + "px";
+            },24);
+
+        }
+    };
+
+</script>
+</head>
+
+<body>
+
+<div id="slideShow">
+    <h2>
+        <a class="title" href="http://slien.me">slien's blog</a>
+    </h2>
+    <div class="wrap">
+        <p class="up"><a href="javascript:;"></a></p>
+        <div class="content" id="content">
+            <ul>
+                <li><img src="images/1.gif"/></li>
+                <li><img src="images/2.gif"/></li>
+                <li><img src="images/3.gif"/></li>
+                <li><img src="images/4.gif"/></li>
+                <li><img src="images/5.gif"/></li>
+                <li><img src="images/6.gif"/></li>
+                <li><img src="images/7.gif"/></li>
+                <li><img src="images/8.gif"/></li>
+            </ul>
+        </div>
+        <p class="down"><a href="javascript:;"></a></p>
+    </div>
+    <div class="footer"></div>
+</div>
+
+</body>
+</html>
