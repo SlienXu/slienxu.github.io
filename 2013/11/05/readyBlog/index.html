@@ -67,6 +67,8 @@
 <pre><code><span class="comment">window</span>.<span class="comment">onload</span> <span class="comment">=</span> <span class="comment">function(){</span>
     <span class="comment">//js代码</span>.<span class="string">.</span><span class="string">.</span><span class="string">.</span>
 <span class="comment">};</code></pre>
+ <a id="more"></a>  
+
 <p>window.onload是当界面中所有的资源全部加载完成后才执行的一个回调函数。所有的资源包括DOM元素、js、css、图片等等。问题是如果界面中的资源非常多，包括大量的图片和外部文件时该函数的执行会等到很久之后，用户体验和网站的性能都不是很可靠。用jQuery的童鞋都知道，jquery的代码要写在<em>$(function(){//代码})</em>中，此处代码就是在界面元素加载完执行的，功能上类似于window.onload函数。实际却是js中的ready事件,不同于onload的是：ready事件等DOM元素加载完就执行。</p>
 <p>下面就详细介绍js的ready事件：</p>
 <p>首先ready是一种描述，指的是界面DOM元素都加载完成的状态。针对不同的浏览器具体的ready事件不同。<br>高级浏览器即非IE6/7/8写法:</p>
