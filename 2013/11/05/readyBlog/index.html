@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Slien's Blog</title>
+  <title>原生js的ready和onload | Slien's Blog</title>
   <meta name="author" content="Slien">
   
   <meta name="description" content="slien's blog 易者易，难者难">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="原生js的ready和onload"/>
   <meta property="og:site_name" content="Slien's Blog"/>
 
   
@@ -47,26 +47,65 @@
 </nav>
 <div class="clearfix"></div></header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article class="page">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
   
   <div class="post-content">
     <header>
       
+        <div class="icon"></div>
+        <time datetime="2013-11-05T14:10:00.000Z"><a href="/2013/11/05/readyBlog/">11月 5 2013</a></time>
+      
       
   
-    <h1 class="title"></h1>
+    <h1 class="title">原生js的ready和onload</h1>
   
 
     </header>
     <div class="entry">
       
-        <iframe scrolling='no' frameborder='0' src='http://yibo.iyiyun.com/js/yibo404/key/0' width='640' height='464' style='display:block;'></iframe>
+        <p>我们知道js选取界面元素代码在执行时，相关的DOM必须是加载完成的。因此，当在head中写js代码时，必须添加把相关代码写在window.onload函数中如下：</p>
+<pre><code><span class="comment">window</span>.<span class="comment">onload</span> <span class="comment">=</span> <span class="comment">function(){</span>
+    <span class="comment">//js代码</span>.<span class="string">.</span><span class="string">.</span><span class="string">.</span>
+<span class="comment">};</code></pre>
+<p>window.onload是当界面中所有的资源全部加载完成后才执行的一个回调函数。所有的资源包括DOM元素、js、css、图片等等。问题是如果界面中的资源非常多，包括大量的图片和外部文件时该函数的执行会等到很久之后，用户体验和网站的性能都不是很可靠。用jQuery的童鞋都知道，jquery的代码要写在<em>$(function(){//代码})</em>中，此处代码就是在界面元素加载完执行的，功能上类似于window.onload函数。实际却是js中的ready事件,不同于onload的是：ready事件等DOM元素加载完就执行。</p>
+<p>下面就详细介绍js的ready事件：</p>
+<p>首先ready是一种描述，指的是界面DOM元素都加载完成的状态。针对不同的浏览器具体的ready事件不同。<br>高级浏览器即非IE6/7/8写法:</p>
+<pre><code><span class="comment">//高级浏览器    </span>
+document<span class="variable">.addEventListener</span>(<span class="string">"DOMContentLoaded"</span>,function(){
+    <span class="comment">//ready完成执行代码</span>
+},<span class="literal">false</span>);
+
+<span class="comment">//IE6/7/8</span>
+document<span class="variable">.onreadystatechange</span> = function(){
+    <span class="keyword">if</span>(document<span class="variable">.readyState</span> == <span class="string">"complete"</span>){
+        <span class="comment">//ready完成</span>
+    }
+};</code></pre>
+<p>综上可以封装一个兼容的函数，类似jQuery中的ready，如下：</p>
+<pre><code>function $(fn){
+    if(document<span class="preprocessor">.addEventListener</span>){
+        document<span class="preprocessor">.addEventListener</span>(<span class="string">"DOMContentLoaded"</span>,fn，false)<span class="comment">;</span>
+    }else{
+        document<span class="preprocessor">.onreadystatechange</span> = function(){
+            if(document<span class="preprocessor">.readtState</span> == <span class="string">"complete"</span>){
+                fn()<span class="comment">;</span>
+            }<span class="comment">;    </span>
+        }<span class="comment">;</span>
+    }<span class="comment">;</span>
+}<span class="comment">;</span></code></pre>
+<p>当使用时不用写window.onload,直接使用$(function(){//js代码});即可。</p>
+
       
     </div>
     <footer>
       
         
         
+  
+  <div class="tags">
+    <a href="/tags/古文/诗词/">古文/诗词</a>
+  </div>
+
         
   <div class="addthis addthis_toolbox addthis_default_style">
     
