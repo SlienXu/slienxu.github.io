@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" class=" js no-touch cssanimations csstransitions" style="">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+<title>slien Demo </title>
+<link rel="stylesheet" type="text/css" href="default.css">
+<link rel="stylesheet" type="text/css" href="component.css">
+<link rel="stylesheet" type="text/css" href="demoad.css">
+<style type="text/css">
+	.one .bsa_it_ad .bsa_it_t {
+		display: block;
+		font-size: 12px;
+		font-weight: bold;
+		color: #212121;
+		line-height: 125%;
+		padding: 0 0 5px 0;
+	}
+</style>
+<script type="text/javascript">
+window.onload = function(){
+	var aColor = ["#9e1847","#e86814","#00b4ae","#90b912","#744783","blue"];
+	var aShuoming = ["这是一个幻灯片播放效果","这是碰撞拖拽相关的效果","菜单类","图片展示","多个放大镜","瀑布流"];
+	var oOpenMenuBtn = document.getElementById("openMenuBtn");
+	var demoNav = document.getElementById("demoNav");
+	var oP = document.getElementById("shuoming");
+	var aDemo = demoNav.children;
+
+	for(var i = 0 ; i < aShuoming.length; i++){
+		var oA = document.createElement("a");
+		oA.href = "javascript:;";
+		oA.innerHTML = "Demo" + (i+1);
+		demoNav.appendChild(oA);
+	}
+
+	demoNav.children[0].className = "current-demo";
+
+	for(var i = 0 ; i < aDemo.length ; i++){
+		(function(index){
+			aDemo[i].onclick = function(){
+				for(var i = 0 ; i < aDemo.length ; i++){
+					aDemo[i].className = "";
+				}
+				this.className = "current-demo";
+				tab(index);
+			};
+		})(i);
+	};
+
+	tab(0);
+
+	function tab(index){
+		oOpenMenuBtn.style.backgroundColor = aColor[index];
+		oOpenMenuBtn.onclick = function(){
+			//window.open();
+			alert(aColor[index]);
+		};
+		oP.innerHTML = aShuoming[index];
+	}
+
+}
+</script>
+
+</head>
+<body>
+		<div class="container demo-5">	
+			<header class="clearfix">
+				<h1>作品集 <span>by slien</span></h1>	
+				<nav class="codrops-demos" id="demoNav">
+					<!-- <a href="javascript:;">Demo 1</a>
+					<a href="javascript:;">Demo 2</a>
+					<a href="javascript:;">Demo 3</a>
+					<a href="javascript:;">Demo 4</a>
+					<a class="current-demo" href="javascript:;">Demo 5</a> -->
+				</nav>
+			</header>
+			<div class="main clearfix">
+				<div class="column">
+					<p id="shuoming"></p>
+				</div>
+				<div class="column">
+					<div id="dl-menu" class="dl-menuwrapper">
+						<button class="dl-trigger" id="openMenuBtn">Open Menu</button>
+						<!-- <ul class="dl-menu">
+							<li>
+								<a href="#">Fashion</a>
+								<ul class="dl-submenu"><li class="dl-back"><a href="#">back</a></li>
+									<li>
+										<a href="#">Men</a>
+										<ul class="dl-submenu"><li class="dl-back"><a href="#">back</a></li>
+											<li><a href="#">Shirts</a></li>
+											<li><a href="#">Jackets</a></li>
+											<li><a href="#">Chinos &amp; Trousers</a></li>
+											<li><a href="#">Jeans</a></li>
+											<li><a href="#">T-Shirts</a></li>
+											<li><a href="#">Underwear</a></li>
+										</ul>
+									</li>
+									<li>
+										<a href="#">Women</a>
+										<ul class="dl-submenu"><li class="dl-back"><a href="#">back</a></li>
+											<li><a href="#">Jackets</a></li>
+											<li><a href="#">Knits</a></li>
+											<li><a href="#">Jeans</a></li>
+											<li><a href="#">Dresses</a></li>
+											<li><a href="#">Blouses</a></li>
+											<li><a href="#">T-Shirts</a></li>
+											<li><a href="#">Underwear</a></li>
+										</ul>
+									</li>
+									<li>
+										<a href="#">Children</a>
+										<ul class="dl-submenu"><li class="dl-back"><a href="#">back</a></li>
+											<li><a href="#">Boys</a></li>
+											<li><a href="#">Girls</a></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">Electronics</a>
+								<ul class="dl-submenu"><li class="dl-back"><a href="#">back</a></li>
+									<li><a href="#">Camera &amp; Photo</a></li>
+									<li><a href="#">TV &amp; Home Cinema</a></li>
+									<li><a href="#">Phones</a></li>
+									<li><a href="#">PC &amp; Video Games</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">Furniture</a>
+								<ul class="dl-submenu"><li class="dl-back"><a href="#">back</a></li>
+									<li>
+										<a href="#">Living Room</a>
+										<ul class="dl-submenu"><li class="dl-back"><a href="#">back</a></li>
+											<li><a href="#">Sofas &amp; Loveseats</a></li>
+											<li><a href="#">Coffee &amp; Accent Tables</a></li>
+											<li><a href="#">Chairs &amp; Recliners</a></li>
+											<li><a href="#">Bookshelves</a></li>
+										</ul>
+									</li>
+									<li>
+										<a href="#">Bedroom</a>
+										<ul class="dl-submenu"><li class="dl-back"><a href="#">back</a></li>
+											<li>
+												<a href="#">Beds</a>
+												<ul class="dl-submenu"><li class="dl-back"><a href="#">back</a></li>
+													<li><a href="#">Upholstered Beds</a></li>
+													<li><a href="#">Divans</a></li>
+													<li><a href="#">Metal Beds</a></li>
+													<li><a href="#">Storage Beds</a></li>
+													<li><a href="#">Wooden Beds</a></li>
+													<li><a href="#">Children's Beds</a></li>
+												</ul>
+											</li>
+											<li><a href="#">Bedroom Sets</a></li>
+											<li><a href="#">Chests &amp; Dressers</a></li>
+										</ul>
+									</li>
+									<li><a href="#">Home Office</a></li>
+									<li><a href="#">Dining &amp; Bar</a></li>
+									<li><a href="#">Patio</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">Jewelry &amp; Watches</a>
+								<ul class="dl-submenu"><li class="dl-back"><a href="#">back</a></li>
+									<li><a href="#">Fine Jewelry</a></li>
+									<li><a href="#">Fashion Jewelry</a></li>
+									<li><a href="#">Watches</a></li>
+									<li>
+										<a href="#">Wedding Jewelry</a>
+										<ul class="dl-submenu"><li class="dl-back"><a href="#">back</a></li>
+											<li><a href="#">Engagement Rings</a></li>
+											<li><a href="#">Bridal Sets</a></li>
+											<li><a href="#">Women's Wedding Bands</a></li>
+											<li><a href="#">Men's Wedding Bands</a></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul> -->
+					</div><!-- /dl-menuwrapper -->
+				</div>
+			</div>
+		</div><!-- /container -->
+
+		<div id="cdawrap"><div id="bsap_402" class="bsap" data-serve="CKSDE">
+<div class="bsa_it one"><!-- AdPacks.com Ad Code -->
+
+<!-- End AdPacks.com Ad Code -->
+
+<!-- AdPacks.com Zone Code -->
+<div id="bsap_1266962" class="bsap_1266962 bsap"><div class="bsa_it one"><div class="bsa_it_ad ad1 odd" id="bsa_3634357"><a href="javascript:;" onmouseover="" target="_top"><span class="bsa_it_i"><img src="4.jpg" height="100" width="130"></span></a><a href="javascript:;" onmouseover="" target="_top">
+	<span class="bsa_it_t">徐小贝-Slien</span>
+	<span class="bsa_it_d" onclick="window.open('http://slien.me')">
+		个人空间：http://slien.me
+	</span>
+</a><div style="clear: both;"></div></div><span class="bsa_it_p"><a href="javascript:;">ads by BSA</a></span></div></div>
+<!-- <a href="http://adpacks.com/" id="bsap_aplink">via Ad Packs</a> -->
+<!-- End AdPacks.com Zone Code -->
+
+<span class="bsa_it_p">
+<a href="http://buysellads.com/buy/detail/138927/zone/1286824?utm_source=site_138927&amp;utm_medium=website&amp;utm_campaign=imagetext&amp;utm_content=zone_1286824">ads by BSA</a>
+</span>
+</div></div><!-- <span id="cda-remove"></span> --></div>
+</body>
+</html>

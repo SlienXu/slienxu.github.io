@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-		<title>Slien's Blog - Work Demos</title>
+		<title>Slien's Blog - Work Demos - http://slien.me</title>
 		<meta name="description" content="Multi-Level Push Menu: Off-screen navigation with multiple levels" />
 		<meta name="keywords" content="multi-level, menu, navigation, off-canvas, off-screen, mobile, levels, nested, transform" />
 		<meta name="author" content="Codrops" />
@@ -14,6 +14,95 @@
 		<link rel="stylesheet" type="text/css" href="css/icons.css" />
 		<link rel="stylesheet" type="text/css" href="css/component.css" />
 		<script src="js/modernizr.custom.js"></script>
+		<style type="text/css">
+			#work_img {
+				max-width: 460px;
+				max-height: 300px;
+				border: 1px solid #BBB;
+				-webkit-box-shadow: 1px 2px 3px #ddd;
+				box-shadow: 1px 2px 3px #ddd;
+			}
+			.shadow {
+				-webkit-box-shadow: 1px 2px 3px #ddd;
+				box-shadow: 1px 2px 3px #ddd;
+			}
+			.clickimg{
+				position:absolute;
+
+			}
+		</style>
+		<script type="text/javascript">
+			window.onload = function(){
+				//规则说明：.二级菜单的li需要添加2个属性 class="secondLi"  _name ="applemenu"，_name值、workData属性名、图片截图名必须一致=作品名字，
+
+				var workData = {
+					//菜单类
+					"applemenu":{"desc": "仿苹果菜单效果,用到了html+css+js","ahref":"../demo/menu/applemenu/applemenu.html"},
+					"treemenu":{"desc": "常见的多级树形菜单效果,用到了html+css+js","ahref":"../demo/menu/treemenu/treemenu.html"},
+					"jdmenu":{"desc": "仿京东左侧菜单效果,可以移入二级菜单","ahref":"../demo/menu/jdmenu/index.html"},
+					//数码时钟
+					"clock":{"desc": "一款数码时钟效果，和本机时间一致","ahref":"../demo/digTimer/digTimer_demo.html"},
+					//放大镜
+					"zoom":{"desc": "网上经常见到的一种放大镜效果,用到了html+css+js","ahref":"../demo/mulZoom/mulzoom.html"},
+					//幻灯片
+					"ppt":{"desc": "一款幻灯片效果，图片自动轮播以及点击左右、下方的控制区域","ahref":"../demo/powerpoint/powerpoint.html"},
+					//拖拽类
+					"note":{"desc": "类似于记事本，可以用鼠标拖动四条边、四个角来放大缩小","ahref":"../demo/drag/note.html"},
+					"crash":{"desc": "拖动色块，进行碰撞检测，松开鼠标时该色块和碰撞色块中距离最近的那个交换位置","ahref":"../demo/drag/morecrash.html"},
+					"dragAndDrop":{"desc": "任意拖动色块，点击还原按钮，色块沿原路线返回原位置","ahref":"../demo/drag/dragAndDrop.html"},
+
+					//图片展示  左右拖动图片，图片随着到中心线的距离缩放
+					"picshow":{"desc": "左右拖动图片，图片随着到中心线的距离缩放","ahref":"../demo/picshow/picshow.html"},
+					//颜色选择器
+					"colorselect":{"desc": "仿写DreamWaver中的颜色选择器，点击色块可以取到色值","ahref":"../demo/colorselect.html"},
+					//瀑布流
+					"waterfall":{"desc": "瀑布流效果，色块是有随机背景色的li，用到了html+css+js","ahref":"../demo/waterfall.html"},
+					//图片懒加载
+					"lazyloading":{"desc": "页面上图片又多又大时，可以用默认小图片占位，随着鼠标滚动当该图片出现在可视区时，才开始加载真正的图片","ahref":"../demo/lazyloading.html"},
+					//缓冲运动
+					"buffermove":{"desc": "缓冲运动效果，可以同时改变多种样式","ahref":"../demo/buffermove.html"},
+
+//ok
+					//自定义组件类
+					"dateActive":{"desc": "自定义的一款万年历组件，引入组件js,使用起来非常方便","ahref":"../demo/active/dateActive/calendar.html"},
+					"optionActive":{"desc": "自定义的一款单选框按钮效果，可以任意改变单选框的样式","ahref":"../demo/active/optionActive/option.html"},
+					"selectActive":{"desc": "自定义的一款下拉框组件,只需引入组件js，使用起来非常简单","ahref":"../demo/active/selectActive/select.html"},
+					//点击 图片上下滑动展示
+					"sliderShow":{"desc": "鼠标按住上下上下箭头所在区域，图片上下无缝滑动","ahref":"../demo/sliderShow/slideshow.html"}
+					
+				};
+
+				var oWorkDesc = document.getElementById("work_desc");
+				var oWorkA = document.getElementById("work_a");
+				var oWorkImg = document.getElementById("work_img");
+				var arrli = document.getElementsByTagName("li");
+				var oTrigger = document.getElementById("trigger");
+				var mlPushMenu = window.mlPushMenu;//菜单对象
+				var aLi = [];
+				for(var i = 0 ; i < arrli.length;i++){
+					if(arrli[i].className == "secondLi"){
+						aLi.push(arrli[i]);
+					}
+				}
+				// var mlpush = new mlPushMenu(document.getElementById("mp-menu"),oTrigger,"cover")
+				//mlpush._openMenu();
+				//给二级效果菜单li添加点击事件
+				for(var i = 0 ; i < aLi.length ; i++){
+					aLi[i].onclick = function(){
+						var workName = this.getAttribute("_name");
+						oWorkDesc.innerHTML = workData[workName].desc;
+						oWorkA.href = workData[workName].ahref;
+						oWorkImg.src = "img/" + workName + ".png";
+						//oTrigger.click();
+					}
+				}
+
+				oWorkImg.onclick = function(){
+
+				}
+
+			};
+		</script>
 	</head>
 	<body>
 		<div class="container">
@@ -21,82 +110,101 @@
 			<div class="mp-pusher" id="mp-pusher">
 
 				<!-- mp-menu -->
-				<nav id="mp-menu" class="mp-menu">
+				<nav id="mp-menu" class="mp-menu" style="overflow:auto">
 					<div class="mp-level">
 						<h2 class="icon icon-world">菜单</h2>
 						<ul>
 							<li class="icon icon-arrow-left">
-								<a class="icon icon-news" href="#">菜单类</a>
+								<a class="icon icon-news" href="javascript:;">菜单类</a>
 								<div class="mp-level">
 									<h2 class="icon icon-news">菜单类</h2>
-									<a class="mp-back" href="#">back</a>
+									<a class="mp-back" href="javascript:;">back</a>
 									<ul>
-										<li><a href="#">仿苹果菜单</a></li>
-										<li><a href="#">多级树型菜单</a></li>
+										<li class="secondLi"  _name ="applemenu"><a href="javascript:;">仿苹果菜单</a></li>
+										<li class="secondLi" _name ="treemenu"><a href="javascript:;" >多级树型菜单</a></li>
+										<li class="secondLi" _name ="jdmenu"><a href="javascript:;" >仿京东左侧菜单</a></li>
 									</ul>
 								</div>
 							</li>
 							<li class="icon icon-arrow-left">
-								<a class="icon icon-clock" href="#">时钟类</a>
+								<a class="icon icon-clock" href="javascript:;">时钟类</a>
 								<div class="mp-level">
 									<h2 class="icon icon-clock">时钟类</h2>
-									<a class="mp-back" href="#">back</a>
+									<a class="mp-back" href="javascript:;">back</a>
 									<ul>
-										<li><a href="#">炫酷数码时钟</a></li>
+										<li class="secondLi" _name ="clock"><a href="javascript:;">炫酷数码时钟</a></li>
 									</ul>
 								</div>
 							</li>
                             <li class="icon icon-arrow-left">
-								<a class="icon icon-search" href="#">放大镜类</a>
+								<a class="icon icon-search" href="javascript:;">放大镜类</a>
 								<div class="mp-level">
 									<h2 class="icon icon-search">放大镜类</h2>
-									<a class="mp-back" href="#">back</a>
+									<a class="mp-back" href="javascript:;">back</a>
 									<ul>
-										<li><a href="#">放大镜</a></li>
+										<li class="secondLi" _name ="zoom"><a href="javascript:;">放大镜</a></li>
 									</ul>
 								</div>
 							</li>
                             <li class="icon icon-arrow-left">
-								<a class="icon icon-news" href="#">幻灯片类</a>
+								<a class="icon icon-news" href="javascript:;">幻灯片类</a>
 								<div class="mp-level">
 									<h2 class="icon icon-news">幻灯片类</h2>
-									<a class="mp-back" href="#">back</a>
+									<a class="mp-back" href="javascript:;">back</a>
 									<ul>
-										<li><a href="#">幻灯片</a></li>
+										<li class="secondLi" _name ="ppt"><a href="javascript:;">幻灯片</a></li>
 									</ul>
 								</div>
 							</li>
                             <li class="icon icon-arrow-left">
-								<a class="icon icon-news" href="#">拖动类</a>
+								<a class="icon icon-truck" href="javascript:;">拖动类</a>
 								<div class="mp-level">
-									<h2 class="icon icon-news">拖动类</h2>
-									<a class="mp-back" href="#">back</a>
+									<h2 class="icon icon-truck">拖动类</h2>
+									<a class="mp-back" href="javascript:;">back</a>
 									<ul>
-										<li><a href="#">四边四角拖拽</a></li>
-                                        <li><a href="#">多碰撞检测</a></li>
-                                        <li><a href="#">DragAndDrop</a></li>
+										<li class="secondLi"_name ="note" ><a href="javascript:;">四边四角拖拽</a></li>
+                                        <li class="secondLi" _name ="crash"><a href="javascript:;">多碰撞检测</a></li>
+                                        <li class="secondLi" _name ="dragAndDrop"><a href="javascript:;">DragAndDrop</a></li>
 									</ul>
 								</div>
 							</li>
                             <li class="icon icon-arrow-left">
-								<a class="icon icon-news" href="#">Magazines</a>
+								<a class="icon icon-photo" href="javascript:;">图片展示</a>
 								<div class="mp-level">
-									<h2 class="icon icon-news">Magazines</h2>
-									<a class="mp-back" href="#">back</a>
+									<h2 class="icon icon-photo">图片展示</h2>
+									<a class="mp-back" href="javascript:;">back</a>
 									<ul>
-										<li><a href="#">National Geographic</a></li>
-										<li><a href="#">Scientific American</a></li>
-										<li><a href="#">The Spectator</a></li>
-										<li><a href="#">The Rambler</a></li>
-										<li><a href="#">Physics World</a></li>
-										<li><a href="#">The New Scientist</a></li>
+										<li class="secondLi" _name ="picshow"><a href="javascript:;">图片展示</a></li>
 									</ul>
 								</div>
 							</li>
-							<li><a class="icon icon-photo" href="#">Collections</a></li>
-							<li><a class="icon icon-wallet" href="#">Credits</a></li>
+							<li class="icon icon-arrow-left">
+								<a class="icon icon-settings" href="javascript:;">自定义组件类</a>
+								<div class="mp-level">
+									<h2 class="icon icon-settings">自定义组件类</h2>
+									<a class="mp-back" href="javascript:;">back</a>
+									<ul>
+										<li class="secondLi" _name="dateActive"><a href="javascript:;">自定义万年历</a></li>
+										<li class="secondLi" _name="optionActive"><a href="javascript:;">自定义单选按钮</a></li>
+										<li class="secondLi" _name="selectActive"><a href="javascript:;">自定义下拉框效果</a></li>
+									</ul>
+								</div>
+							</li>
+							<li class="icon icon-arrow-left">
+								<a class="icon icon-like" href="javascript:;">其他常见效果</a>
+								<div class="mp-level">
+									<h2 class="icon icon-like">其他常见效果</h2>
+									<a class="mp-back" href="javascript:;">back</a>
+									<ul>
+										<li class="secondLi" _name="colorselect"><a href="javascript:;">颜色选择器</a></li>
+										<li class="secondLi" _name="waterfall"><a href="javascript:;">瀑布流</a></li>
+										<li class="secondLi" _name="lazyloading"><a href="javascript:;">图片懒加载</a></li>
+										<li class="secondLi" _name="buffermove"><a href="javascript:;">缓冲运动</a></li>
+										<li class="secondLi" _name="sliderShow"><a href="javascript:;">图片上下滑动展示</a></li>
+									</ul>
+								</div>
+							</li>
 						</ul>
-							
 					</div>
 				</nav>
 				<!-- /mp-menu -->
@@ -110,11 +218,14 @@
 							<div class="block block-40 clearfix">
 								<p><a href="#" id="trigger" class="menu-trigger">打开/关闭 菜单</a></p>
 								<nav class="codrops-demos">
-                                    <p id="work_desc"></p>
+                                    <p id="work_desc">仿苹果菜单，鼠标在dock图标上滑动时放大dock图标</p>
 								</nav>
 							</div>
 							<div class="block block-60">
-								<img id="work_img" src=""/>
+								<a id="work_a" href="../demo/menu/applemenu/applemenu.html" title="点击进入Demo" target="_black">
+									<img id="work_img" src="img/applemenu.png"/>
+								</a>
+								<img src="img/clickhere.png" class="clickimg"/>
 							</div>
 						</div>
 					</div><!-- /scroller-inner -->
