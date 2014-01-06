@@ -34,10 +34,10 @@
 		<script type="text/javascript">
 			window.onload = function(){
 				//规则说明：.二级菜单的li需要添加2个属性 class="secondLi"  _name ="applemenu"，_name值、workData属性名、图片截图名必须一致=作品名字，
-
+http://photo.weibo.com/2134573052/albums/detail/album_id/3641984244948213?from=profile_wb&pos=18#!/mode/1/page/1
 				var workData = {
 					//菜单类
-					"applemenu":{"desc": "仿苹果菜单效果,用到了html+css+js","ahref":"../demo/menu/applemenu/applemenu.html"},
+					"applemenu":{"desc": "仿苹果菜单效果,用到了html+css+js","ahref":"../demo/menu/applemenu/applemenu.html","imgUrl":""},
 					"treemenu":{"desc": "常见的多级树形菜单效果,用到了html+css+js","ahref":"../demo/menu/treemenu/treemenu.html"},
 					"jdmenu":{"desc": "仿京东左侧菜单效果,可以移入二级菜单","ahref":"../demo/menu/jdmenu/index.html"},
 					//数码时钟
@@ -96,20 +96,13 @@
 						//oTrigger.click();
 					}
 				}
-
-				
-				oTrigger.click();
-				oWorkImg.onclick = function(){
-
-				}
-
 			};
 		</script>
 	</head>
 	<body>
 		<div class="container">
 			<!-- Push Wrapper -->
-			<div class="mp-pusher" id="mp-pusher">
+			<div class="mp-pusher mp-pushed" id="mp-pusher" style="-webkit-transform: translate3d(300px, 0, 0);">
 
 				<!-- mp-menu -->
 				<nav id="mp-menu" class="mp-menu" style="overflow:auto">
