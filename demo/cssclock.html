@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>clock-徐小贝slien-http://slien.me</title>
+<style>
+#div1 {width:300px; height:300px; border:1px solid black; margin:100px auto; border-radius:50%; position:relative; box-shadow:2px 2px 5px #666;}
+
+#div1 div.hour {position:absolute; width:16px; height:80px; background:black; left:50%; top:70px; margin-left:-8px; 
+	-webkit-transform-origin:center bottom;
+	-moz-transform-origin:center bottom;
+	-ms-transform-origin:center bottom;
+	-o-transform-origin:center bottom;
+}
+#div1 div.min {position:absolute; width:8px; height:110px; background:black; left:50%; top:40px; margin-left:-4px; -webkit-transform-origin:center bottom;-moz-transform-origin:center bottom;
+	-ms-transform-origin:center bottom;
+	-o-transform-origin:center bottom;}
+#div1 div.sec {position:absolute; width:2px; height:130px; background:black; left:50%; top:20px; margin-left:-1px; -webkit-transform-origin:center bottom;-moz-transform-origin:center bottom;
+	-ms-transform-origin:center bottom;
+	-o-transform-origin:center bottom;}
+
+#div1 div.point {position:absolute; width:30px; height:30px; left:50%; top:50%; margin-left:-15px; margin-top:-15px; background:#333; border-radius:50%;}
+
+#div1 span.scaler {position:absolute; width:2px; height:12px; background:black; left:50%; margin-left:-1px; -webkit-transform-origin:1px 150px;
+-moz-transform-origin:1px 150px;
+-ms-transform-origin:1px 150px;
+-o-transform-origin:1px 150px;}
+
+#div1 span.big_scaler {position:absolute; width:6px; height:20px; background:black; left:50%; margin-left:-3px; -webkit-transform-origin:3px 150px;
+-moz-transform-origin:3px 150px;
+-ms-transform-origin:3px 150px;
+-o-transform-origin:3px 150px;}
+
+#div1 span.big_scaler em {position:absolute; top:20px; font-style:normal; width:100px; left:50%; margin-left:-50px; text-align:center;}
+</style>
+<script>
+function setStyle3(obj, name, value)
+{
+	var bigName=name.charAt(0).toUpperCase()+name.substring(1);
+	
+	obj.style['Webkit'+bigName]=value;
+	obj.style['Moz'+bigName]=value;
+	obj.style['ms'+bigName]=value;
+	obj.style['O'+bigName]=value;
+	obj.style[name]=value;
+}
+
+window.onload=function ()
+{
+	var oDiv=document.getElementById('div1');
+	var oHour=document.querySelector('#div1 .hour');
+	var oMin=document.querySelector('#div1 .min');
+	var oSec=document.querySelector('#div1 .sec');
+	
+	//生成刻度
+	for(var i=0;i<60;i++)
+	{
+		var oSpan=document.createElement('span');
+		
+		if(i%5)
+		{
+			oSpan.className='scaler';
+		}
+		else
+		{
+			oSpan.className='big_scaler';
+			if(i==0)
+			{
+				oSpan.innerHTML='<em>12<\/em>';
+			}
+			else
+			{
+				oSpan.innerHTML='<em>'+i/5+'<\/em>';
+			}
+			
+			setStyle3(oSpan.children[0], 'transform', 'rotate(-'+i*6+'deg)');
+		}
+		
+		setStyle3(oSpan, 'transform', 'rotate('+i*6+'deg)');
+		
+		oDiv.appendChild(oSpan);
+	}
+	
+	//走
+	function tick()
+	{
+		var oDate=new Date();
+		
+		setStyle3(oHour, 'transform', 'rotate('+((oDate.getHours()+oDate.getMinutes()/60)*30)+'deg)');
+		setStyle3(oMin, 'transform', 'rotate('+((oDate.getMinutes()+oDate.getSeconds()/60)*6)+'deg)');
+		setStyle3(oSec, 'transform', 'rotate('+((oDate.getSeconds()+oDate.getMilliseconds()/1000)*6)+'deg)');
+	}
+	
+	setInterval(tick, 30);
+	tick();
+};
+</script>
+</head>
+
+<body>
+<div id="div1">
+	<div class="hour"></div>
+	<div class="min"></div>
+	<div class="sec"></div>
+    <div class="point"></div>
+</div>
+</body>
+</html>
